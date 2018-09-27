@@ -1,0 +1,21 @@
+Package: ggheatmap
+Title: Elegant Heatmaps with ggplot2.
+Version: 1.0.0.9000
+Authors@R: person("Jakob", "Bossek", email = "j.bossek@gmail.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends:
+  R (>= 3.1.0),
+  ggplot2
+Imports:
+  BBmisc,
+  checkmate,
+  reshape2,
+  viridis
+Suggests:
+  testthat
+License: GPL-2 | file LICENSE
+BugReports: https://github.com/jakobbossek/ggheatmap/issues
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+RoxygenNote: 6.0.1
