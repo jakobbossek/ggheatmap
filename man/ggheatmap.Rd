@@ -4,13 +4,20 @@
 \alias{ggheatmap}
 \title{Plot heatmap.}
 \usage{
-ggheatmap(x, value.name = "value", show.diag = TRUE, type = "complete",
-  range = NULL, show.values = FALSE, value.size = 1.5,
-  value.color = "white")
+ggheatmap(x, id.vars = c("Var1", "Var2"), value.name = "value",
+  show.diag = TRUE, type = "complete", range = NULL,
+  show.values = FALSE, value.size = 1.5, value.color = "white",
+  digits = 1L)
 }
 \arguments{
 \item{x}{[\code{matrix} | \code{list of matrices} | \code{data.frame}]\cr
 Data frame, matrix or a list of matrices.}
+
+\item{id.vars}{[\code{character(2)}]\cr
+Only relevant if \code{x} is of type \code{data.frame}.
+Character vector of length two indicating the column names of \code{x} which
+serve as id variables.
+Defaults to \dQuote{id.vars = c("Var1", "Var2")}.}
 
 \item{value.name}{[\code{character(1)}]\cr
 Name for the values represented by the matrix.
@@ -49,6 +56,10 @@ Default is 1.5.}
 Color of text in cells.
 Only relevant if \code{show.values} is \code{TRUE}.
 Default is \dQuote{white}.}
+
+\item{digits}{[\code{integer(1)}]\cr
+Integer indicating the number of decimal places to be used if \code{show.values}
+is \code{TRUE}.}
 }
 \value{
 [\code{\link[ggplot2]{ggplot}}] ggplot object.
@@ -56,6 +67,14 @@ Default is \dQuote{white}.}
 \description{
 Given a data frame, a matrix or a list of matrices this function
 visualizes the given data by a heatmap utilizing \pkg{ggplot2}.
+}
+\details{
+If a data.frame is passed it needs to be in long format as expected
+by \pkg{ggplot2}. If a matrix is passed it is transformed internally into long
+format. In case a list of matrices is passed all those matrices are converted
+into long format and distinguished by the names of the list components. In the
+latter case a single ggplot object is produced adopting facets to split
+by matrix.
 }
 \examples{
 # simulate two (correlation) matrizes

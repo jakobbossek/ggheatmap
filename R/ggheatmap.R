@@ -3,8 +3,20 @@
 #' @description Given a data frame, a matrix or a list of matrices this function
 #' visualizes the given data by a heatmap utilizing \pkg{ggplot2}.
 #'
+#' @details If a data.frame is passed it needs to be in long format as expected
+#' by \pkg{ggplot2}. If a matrix is passed it is transformed internally into long
+#' format. In case a list of matrices is passed all those matrices are converted
+#' into long format and distinguished by the names of the list components. In the
+#' latter case a single ggplot object is produced adopting facets to split
+#' by matrix.
+#'
 #' @param x [\code{matrix} | \code{list of matrices} | \code{data.frame}]\cr
 #'   Data frame, matrix or a list of matrices.
+#' @param id.vars [\code{character(2)}]\cr
+#'   Only relevant if \code{x} is of type \code{data.frame}.
+#'   Character vector of length two indicating the column names of \code{x} which
+#'   serve as id variables.
+#'   Defaults to \dQuote{id.vars = c("Var1", "Var2")}.
 #' @param value.name [\code{character(1)}]\cr
 #'   Name for the values represented by the matrix.
 #'   Internally, the matrix is transformed into a \code{data.frame}
@@ -36,6 +48,9 @@
 #'   Color of text in cells.
 #'   Only relevant if \code{show.values} is \code{TRUE}.
 #'   Default is \dQuote{white}.
+#' @param digits [\code{integer(1)}]\cr
+#'   Integer indicating the number of decimal places to be used if \code{show.values}
+#'   is \code{TRUE}.
 #' @return [\code{\link[ggplot2]{ggplot}}] ggplot object.
 #' @examples
 #' # simulate two (correlation) matrizes
@@ -63,24 +78,37 @@
 #'
 #' }
 #' @export
-ggheatmap = function(x, value.name = "value", show.diag = TRUE, type = "complete", range = NULL, show.values = FALSE, value.size = 1.5, value.color = "white") {
+ggheatmap = function(
+  x,
+  id.vars = c("Var1", "Var2"), value.name = "value",
+  show.diag = TRUE,
+  type = "complete",
+  range = NULL,
+  show.values = FALSE,
+  value.size = 1.5,
+  value.color = "white",
+  digits = 1L) {
+  checkmate::assertCharacter(id.vars, len = 2L, any.missing = FALSE, all.missing = FALSE)
   checkmate::assertString(value.name)
   checkmate::assertFlag(show.values)
   checkmate::assertNumber(value.size, lower = 0.1)
   checkmate::assertString(value.color)
+  digits = checkmate::asInt(digits, lower = 0L)
 
   ggdf = x
-  if (!is.data.frame(ggdf))
+  if (!is.data.frame(ggdf)) {
+    id.vars = c("Var1", "Var2")
     ggdf = reshapeToLongFormat(ggdf, value.name = value.name, show.diag = show.diag, type = type, range = range)
+  }
 
   # plot heatmap
-  pl = ggplot2::ggplot(ggdf, ggplot2::aes_string(x = "Var1", y = "Var2"))
+  pl = ggplot2::ggplot(ggdf, ggplot2::aes_string(x = id.vars[1L], y = id.vars[2L]))
   pl = pl + ggplot2::geom_tile(ggplot2::aes_string(fill = value.name), color = "white", size = 0.1)
 
   # workaround to get rounded values
   if (show.values) {
     ggdf2 = ggdf
-    ggdf2[[value.name]] = round(ggdf2[[value.name]], 1L)
+    ggdf2[[value.name]] = round(ggdf2[[value.name]], digits)
     pl = pl + ggplot2::geom_text(data = ggdf2, ggplot2::aes_string(label = value.name), color = value.color, size = value.size)
   }
 
