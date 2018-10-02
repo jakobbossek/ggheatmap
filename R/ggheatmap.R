@@ -112,7 +112,7 @@ ggheatmap = function(
     pl = pl + ggplot2::geom_text(data = ggdf2, ggplot2::aes_string(label = value.name), color = value.color, size = value.size)
   }
 
-  pl = pl + ggplot2::coord_equal()
+  #pl = pl + ggplot2::coord_equal()
 
   # split if multiple problems available
   if (!is.null(ggdf$prob))
@@ -129,7 +129,14 @@ ggheatmap = function(
     axis.ticks = ggplot2::element_blank(),
     axis.text = ggplot2::element_text(size = 7),
     axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
-    legend.position = "top")
+    panel.border = ggplot2::element_blank(),
+    legend.title.align = 1,
+    legend.text = ggplot2::element_text(size = 7),
+    legend.title = ggplot2::element_text(size = 10),
+    legend.position = "bottom",
+    legend.key.size = ggplot2::unit(0.15, "cm"),
+    legend.key.width = ggplot2::unit(1, "cm")
+  )
   pl = pl + ggplot2::xlab("") + ggplot2::ylab("")
   return(pl)
 }
