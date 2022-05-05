@@ -6,7 +6,6 @@
 [![Build Status](https://travis-ci.org/jakobbossek/ggheatmap.svg?branch=master)](https://travis-ci.org/jakobbossek/ggheatmap)
 [![Build status](https://ci.appveyor.com/api/projects/status/eu0nns2dsgocwntw/branch/master?svg=true)](https://ci.appveyor.com/project/jakobbossek/ggheatmap/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/jakobbossek/ggheatmap/badge.svg?branch=master)](https://coveralls.io/github/jakobbossek/ggheatmap?branch=master)
-[![Research software impact](http://depsy.org/api/package/cran/ggheatmap/badge.svg)](http://depsy.org/package/r/ggheatmap)
 
 ## What is this all about?
 
